@@ -1,0 +1,71 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "debug xv6",
+				"type": "cppdbg",
+				"request": "launch",
+				"program": "${workspaceFolder}/kernel/kernel",
+				"args": [],
+				"stopAtEntry": true,
+				"cwd": "${workspaceFolder}",
+				"miDebuggerServerAddress": "127.0.0.1:26000",
+				"miDebuggerPath": "/usr/bin/gdb-multiarch",
+				"environment": [],
+				"externalConsole": false,
+				"MIMode": "gdb",
+				"setupCommands": [
+					{
+						"description": "pretty printing",
+						"text": "-enable-pretty-printing",
+						"ignoreFailures": true
+					},
+					//在这里加载了寄存器信息表
+					{
+						"text": "set tdesc filename Debug.xml",
+					}
+				],
+				"logging": {
+					 "engineLogging": true,
+					 "programOutput": true,
+				},
+				"preLaunchTask": "xv6build",
+			}
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "xv6build",
+				"type": "shell",
+				"isBackground": true,
+				"command": "make qemu-gdb",
+				"problemMatcher": [
+					{
+						"pattern": [
+							{
+								"regexp": ".",
+								"file": 1,
+								"location": 2,
+								"message": 3
+							}
+						],
+						"background": {
+							"beginsPattern": ".*Now run 'gdb' in another window.",
+							// 要对应编译成功后,一句echo的内容. 此处对应 Makefile Line:170
+							"endsPattern": "."
+						}
+					}
+				]
+			}
+		]
+	}
+}
